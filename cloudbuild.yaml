@@ -1,0 +1,22 @@
+steps:
+  # Build the container image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/eco-league-449307-j8/menu-bot-bolt', '.']
+  # Push the container image to Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/eco-league-449307-j8/menu-bot-bolt']
+  # Deploy container image to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      [
+        'run',
+        'deploy',
+        'menu-bot-bolt',
+        '--image',
+        'gcr.io/eco-league-449307-j8/menu-bot-bolt:$COMMIT_SHA',
+        '--region',
+        'us-central1',
+      ]
+images:
+  - gcr.io/eco-league-449307-j8/menu-bot-bolt:$COMMIT_SHA

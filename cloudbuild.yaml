@@ -12,7 +12,7 @@ steps:
       ]
   # Push the container image to Container Registry
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'gcr.io/eco-league-449307-j8/menu-bot-bolt']
+    args: ['push', 'gcr.io/eco-league-449307-j8/menu-bot-bolt:$COMMIT_SHA']
   # Deploy container image to Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: gcloud

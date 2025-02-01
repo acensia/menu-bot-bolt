@@ -1,7 +1,15 @@
 steps:
   # Build the container image
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/eco-league-449307-j8/menu-bot-bolt', '.']
+    id: 'BUILD and PUSH with cloudpacks'
+    entrypoint: 'pack'
+    args:
+      [
+        'build',
+        '--builder=gcr.io/buildpacks/builder',
+        '--publish',
+        'gcr.io/eco-league-449307-j8/menu-bot-bolt:$COMMIT_SHA',
+      ]
   # Push the container image to Container Registry
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/eco-league-449307-j8/menu-bot-bolt']

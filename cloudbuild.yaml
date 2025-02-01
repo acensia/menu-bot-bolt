@@ -22,6 +22,8 @@ steps:
         'gcr.io/eco-league-449307-j8/menu-bot-bolt:$COMMIT_SHA',
         '--region',
         'us-central1',
+        '--port',
+        '3000',
       ]
 images:
   - gcr.io/eco-league-449307-j8/menu-bot-bolt:$COMMIT_SHA

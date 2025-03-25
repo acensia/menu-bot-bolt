@@ -1,6 +1,7 @@
 import { App, LogLevel } from '@slack/bolt';
 import * as dotenv from 'dotenv';
 import registerListeners from './listeners';
+import { initializeScheduler } from './schedulers/message-scheduler';
 
 dotenv.config();
 
@@ -10,6 +11,7 @@ const app = new App({
   socketMode: true,
   appToken: process.env.SLACK_APP_TOKEN,
   logLevel: LogLevel.DEBUG,
+  signingSecret: process.env.SLACK_SIGNING_SECRET,
 });
 
 /** Register Listeners */
@@ -19,7 +21,9 @@ registerListeners(app);
 (async () => {
   try {
     await app.start(process.env.PORT || 3000);
-    app.logger.info('⚡️ Bolt app is running! ⚡️');
+    // Initialize schedulers after app starts
+    await initializeScheduler(app);
+    app.logger.info('⚡️ Bolt app is running with schedulers! ⚡️');
   } catch (error) {
     app.logger.error('Unable to start App', error);
   }
